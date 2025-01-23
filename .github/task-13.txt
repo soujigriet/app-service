@@ -1,0 +1,204 @@
+TASK 13
+
+a. Write a C program to implement Adjacency Matrix of a given graph. 
+
+#include <stdio.h>
+#include<stdio.h>
+#define MAX 10
+void getgraph(); // READING ADJACENCY MATRIX
+void printgraph(); // DISPLAY ADJACENCY MATRIX
+int G[MAX][MAX]; // ADJACENCY MATRIX
+int n;
+int main()
+{
+    scanf("%d",&n);
+    getgraph();
+    
+    printgraph();
+}
+
+void getgraph()
+{
+  int i,j;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+ 
+                   scanf("%d",&G[i][j]);
+    }  
+}
+void printgraph()
+{
+    int i,j;
+    printf("\nADJACENCY MATRIX OF GRAPH G");
+    for(i=0;i<n;i++)
+    {
+        printf("\nVERTEX %d : ",i);
+        for(j=0;j<n;j++)
+        {
+            printf("%d  ",G[i][j]);
+        }
+    }
+}
+
+
+
+
+Test cases:
+case = t1
+input = 4
+0 1 1 0 1 0 1 1 1 1 0 1 0 1 1 0
+output = 
+
+ADJACENCY MATRIX OF GRAPH G
+VERTEX 0 : 0 1 1 0
+VERTEX 1 : 1 0 1 1
+VERTEX 2 : 1 1 0 1
+VERTEX 3 : 0 1 1 0
+
+case = t2
+input = 3
+0 1 1 1 1 0 1 0 1
+output = 
+
+ADJACENCY MATRIX OF GRAPH G
+VERTEX 0 : 0 1 1
+VERTEX 1 : 1 1 0
+VERTEX 2 : 1 0 1
+
+
+b. Write a C program to implement Adjacency List of a given graph. 
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+  int vertex;
+  struct node* next;
+};
+struct node* createNode(int);
+struct Graph {
+  int numVertices;
+  struct node** adjLists;
+};
+// Create a node
+struct node* createNode(int v) {
+  struct node* newNode = malloc(sizeof(struct node));
+  newNode->vertex = v;
+  newNode->next = NULL;
+  return newNode;
+}
+
+// Create a graph
+struct Graph* createAGraph(int vertices) {
+  struct Graph* graph = malloc(sizeof(struct Graph));
+  graph->numVertices = vertices;
+
+  graph->adjLists = malloc(vertices * sizeof(struct node*));
+
+  int i;
+  for (i = 0; i < vertices; i++)
+    graph->adjLists[i] = NULL;
+
+  return graph;
+}
+
+// Add edge
+void addEdge(struct Graph* graph, int s, int d) {
+  // Add edge from s to d
+  struct node* newNode = createNode(d);
+  newNode->next = graph->adjLists[s];
+  graph->adjLists[s] = newNode;
+
+  // Add edge from d to s
+  newNode = createNode(s);
+  newNode->next = graph->adjLists[d];
+  graph->adjLists[d] = newNode;
+}
+
+// Print the graph
+void printGraph(struct Graph* graph) {
+  int v;
+  printf("\nADJACENCY LIST OF GRAPH G\n");
+  for (v = 0; v < graph->numVertices; v++) {
+    struct node* temp = graph->adjLists[v];
+    printf("\nVertex %d: ", v);
+    while (temp)
+    {
+      printf("%d -> ", temp->vertex);
+      temp = temp->next;
+    }
+    printf("\n");
+  }
+}
+int main()
+{
+  struct Graph* graph ;   //= createAGraph(3);
+  int noofedges,src,dest,i,noofver;
+   //printf("\n Enter no of vertices in the graph:");
+  scanf("%d",&noofver);
+  graph = createAGraph(noofver);
+  //printf("\n Enter no of edges in the graph:");
+  scanf("%d",&noofedges);
+  for(i=1;i<=noofedges;i++)
+  {
+     //printf("\n Enter src and dest vertex of the edge %d:",i);
+     scanf("%d %d",&src,&dest);
+
+     addEdge(graph, src, dest);
+  }
+  printGraph(graph);
+  return 0;
+}
+
+Test cases:
+ 
+case = t1
+input = 4 5
+0 1
+0 2
+0 3
+1 2
+2 3
+output = 
+ADJACENCY LIST OF GRAPH G
+
+Vertex 0: 3 -> 2 -> 1 -> 
+Vertex 1: 2 -> 0 -> 
+Vertex 2: 3 -> 1 -> 0 -> 
+Vertex 3: 2 -> 0 -> 
+
+
+case = t2
+input = 
+3
+3
+0 1
+0 2
+1 2
+output = 
+ADJACENCY LIST OF GRAPH G
+
+Vertex 0: 2 -> 1 -> 
+
+Vertex 1: 2 -> 0 -> 
+
+Vertex 2: 1 -> 0 -> 
+
+case = t3
+input =
+4
+4
+0 1
+0 2
+0 3
+2 3
+output = 
+ADJACENCY LIST OF GRAPH G
+
+Vertex 0: 3 -> 2 -> 1 -> 
+
+Vertex 1: 0 -> 
+
+Vertex 2: 3 -> 0 -> 
+
+Vertex 3: 2 -> 0 -> 
